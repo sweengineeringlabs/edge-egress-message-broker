@@ -1,0 +1,3 @@
+[application]
+# Default in-memory channel capacity for the egress message publisher.
+capacity = 1024

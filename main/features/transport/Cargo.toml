@@ -1,0 +1,55 @@
+[package]
+name         = "swe-edge-egress-message-broker"
+version.workspace     = true
+edition.workspace     = true
+license.workspace     = true
+rust-version.workspace = true
+authors.workspace     = true
+repository.workspace  = true
+description  = "edge — egress message publisher: opt-in MessagePublisher port with in-memory and NATS backends."
+keywords     = ["message-broker", "pubsub", "egress", "nats", "swe"]
+categories   = ["network-programming", "asynchronous"]
+
+[package.metadata.struct-engine]
+application_type = "lib"
+service_type     = "transport"
+
+[lib]
+name = "swe_edge_egress_message_broker"
+path = "src/lib.rs"
+
+[features]
+default   = []
+# In-memory broadcast publisher — for testing and single-process deployments.
+in-memory = ["swe-edge-message-broker/tokio-rt"]
+# NATS-backed publisher.
+nats      = ["swe-edge-message-broker/nats"]
+
+[dependencies]
+thiserror.workspace             = true
+futures.workspace               = true
+tokio.workspace                 = true
+tracing.workspace               = true
+swe-edge-message-broker.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+
+[[test]]
+name = "publisher_int_test"
+path = "tests/publisher_int_test.rs"
+
+[[test]]
+name = "validator_int_test"
+path = "tests/validator_int_test.rs"
+
+[[test]]
+name = "message_broker_dep_int_test"
+path = "tests/message_broker_dep_int_test.rs"
+
+[[test]]
+name = "saf_publisher_int_test"
+path = "tests/saf_publisher_int_test.rs"
+
+[lints]
+workspace = true
