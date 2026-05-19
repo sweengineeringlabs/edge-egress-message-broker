@@ -1,6 +1,6 @@
 //! `swe-edge-egress-message-broker` — opt-in egress message publisher port.
 //!
-//! Wraps `swe-edge-message-broker` as a structured egress port. Nothing is
+//! Wraps `swe-edge-runtime-message-broker` as a structured egress port. Nothing is
 //! compiled unless the caller opts in via a feature flag.
 //!
 //! # Quick start

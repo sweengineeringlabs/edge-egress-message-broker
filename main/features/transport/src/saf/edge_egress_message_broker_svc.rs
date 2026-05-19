@@ -4,7 +4,7 @@ use crate::api::port::publisher::publisher_error::PublisherError;
 use crate::api::port::publisher::publisher_result::PublisherResult;
 use crate::api::port::MessagePublisher;
 use crate::api::traits::Validator;
-use swe_edge_message_broker::Message;
+use swe_edge_runtime_message_broker::Message;
 
 /// Validate any type that implements [`Validator`].
 ///
@@ -49,7 +49,7 @@ pub fn default_publisher() -> impl MessagePublisher + Clone {
 /// Requires the `nats` feature.
 #[cfg(feature = "nats")]
 pub async fn nats_publisher(url: &str) -> Result<impl MessagePublisher + Clone, PublisherError> {
-    use swe_edge_message_broker::nats_broker;
+    use swe_edge_runtime_message_broker::nats_broker;
     let broker = nats_broker(url).await.map_err(PublisherError::from)?;
     Ok(crate::core::NatsMessagePublisher::new(broker))
 }

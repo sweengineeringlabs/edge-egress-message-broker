@@ -1,7 +1,7 @@
 //! `MessagePublisher` — egress port for outbound message publishing.
 
 use futures::future::BoxFuture;
-use swe_edge_message_broker::Message;
+use swe_edge_runtime_message_broker::Message;
 
 use crate::api::port::publisher::publisher_result::PublisherResult;
 
