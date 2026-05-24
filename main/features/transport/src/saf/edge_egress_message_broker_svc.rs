@@ -1,10 +1,18 @@
 //! SAF factory functions for the egress message publisher.
 
+use swe_edge_configbuilder::ConfigBuilder as _;
 use crate::api::port::publisher::publisher_error::PublisherError;
 use crate::api::port::publisher::publisher_result::PublisherResult;
 use crate::api::port::MessagePublisher;
 use crate::api::traits::Validator;
 use swe_edge_runtime_message_broker::Message;
+
+/// Return a [`ConfigBuilder`] pre-seeded with this crate's package name and version.
+pub fn create_config_builder() -> impl swe_edge_configbuilder::ConfigBuilder {
+    swe_edge_configbuilder::create_config_builder()
+        .with_name(env!("CARGO_PKG_NAME"))
+        .with_version(env!("CARGO_PKG_VERSION"))
+}
 
 /// Validate any type that implements [`Validator`].
 ///

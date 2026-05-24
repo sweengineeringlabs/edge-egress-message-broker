@@ -1,10 +1,11 @@
 //! Integration tests — Validator trait via SAF.
 
-use swe_edge_egress_message_broker::{validate, ApplicationConfigBuilder, Validator};
+use swe_edge_egress_message_broker::{validate, MessagePublisherConfig, Validator};
 
+/// @covers: validate — delegates to the Validator impl; non-zero default capacity passes.
 #[test]
-fn test_validate_application_config_builder_returns_ok() {
-    struct CfgValidator(ApplicationConfigBuilder);
+fn test_validate_default_publisher_config_capacity_nonzero_returns_ok() {
+    struct CfgValidator(MessagePublisherConfig);
     impl Validator for CfgValidator {
         fn validate(&self) -> Result<(), String> {
             if self.0.capacity == 0 {
@@ -15,10 +16,10 @@ fn test_validate_application_config_builder_returns_ok() {
         }
     }
 
-    let v = CfgValidator(ApplicationConfigBuilder::new());
-    assert!(validate(&v).is_ok());
+    assert!(validate(&CfgValidator(MessagePublisherConfig::default())).is_ok());
 }
 
+/// @covers: validate — propagates Err from the Validator impl.
 #[test]
 fn test_validate_returns_err_for_zero_capacity() {
     struct ZeroCapacity;
