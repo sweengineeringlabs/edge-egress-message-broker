@@ -32,7 +32,7 @@ tokio.workspace                         = true
 tracing.workspace                       = true
 swe-edge-runtime-message-broker.workspace = true
 serde                  = { version = "1.0", features = ["derive"] }
-swe-edge-configbuilder = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.4.2" }
+swe-edge-configbuilder = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.4.5" }
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
