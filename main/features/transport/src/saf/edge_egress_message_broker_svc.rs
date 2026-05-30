@@ -4,12 +4,11 @@ use crate::api::port::publisher::publisher_error::PublisherError;
 use crate::api::port::publisher::publisher_result::PublisherResult;
 use crate::api::port::MessagePublisher;
 use crate::api::traits::Validator;
-use swe_edge_configbuilder::ConfigBuilder as _;
 use swe_edge_runtime_message_broker::Message;
 
 /// Return a [`ConfigBuilder`] pre-seeded with this crate's package name and version.
-pub fn create_config_builder() -> impl swe_edge_configbuilder::ConfigBuilder {
-    swe_edge_configbuilder::create_config_builder()
+pub fn create_config_builder() -> swe_edge_configbuilder::ConfigBuilderImpl {
+    swe_edge_configbuilder::ConfigLoaderFactory::create_config_builder()
         .with_name(env!("CARGO_PKG_NAME"))
         .with_version(env!("CARGO_PKG_VERSION"))
 }
