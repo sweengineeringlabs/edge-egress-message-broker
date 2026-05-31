@@ -1,4 +1,4 @@
-//! SAF factory functions for the egress message publisher.
+﻿//! SAF factory functions for the egress message publisher.
 
 use crate::api::port::publisher::publisher_error::PublisherError;
 use crate::api::port::publisher::publisher_result::PublisherResult;
@@ -8,9 +8,10 @@ use swe_edge_runtime_message_broker::Message;
 
 /// Return a [`ConfigBuilder`] pre-seeded with this crate's package name and version.
 pub fn create_config_builder() -> swe_edge_configbuilder::ConfigBuilderImpl {
-    swe_edge_configbuilder::ConfigLoaderFactory::create_config_builder()
-        .with_name(env!("CARGO_PKG_NAME"))
-        .with_version(env!("CARGO_PKG_VERSION"))
+    let mut b = swe_edge_configbuilder::ConfigBuilderImpl::new();
+    b = b.with_name(env!("CARGO_PKG_NAME"));
+    b = b.with_version(env!("CARGO_PKG_VERSION"));
+    b
 }
 
 /// Validate any type that implements [`Validator`].
