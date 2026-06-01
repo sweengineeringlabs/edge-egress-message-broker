@@ -1,12 +1,10 @@
 //! Core implementations — pub(crate) only.
 #[cfg(feature = "in-memory")]
-pub(crate) mod default_message_publisher;
+pub(crate) mod default;
 #[cfg(feature = "nats")]
-pub(crate) mod nats_message_publisher;
-pub(crate) mod validator;
+pub(crate) mod nats;
 
 #[cfg(feature = "in-memory")]
-pub(crate) use default_message_publisher::DefaultMessagePublisher;
+pub(crate) use default::DefaultMessagePublisher;
 #[cfg(feature = "nats")]
-pub(crate) use nats_message_publisher::NatsMessagePublisher;
-pub(crate) use validator::DefaultValidator;
+pub(crate) use nats::NatsMessagePublisher;

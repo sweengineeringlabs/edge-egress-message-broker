@@ -3,7 +3,7 @@
 use futures::future::BoxFuture;
 use swe_edge_runtime_message_broker::Message;
 
-use crate::api::port::publisher::publisher_result::PublisherResult;
+use crate::api::port::publisher_result::PublisherResult;
 
 /// Publishes messages to a named topic on an external message broker.
 ///
@@ -11,7 +11,7 @@ use crate::api::port::publisher::publisher_result::PublisherResult;
 /// to obtain a concrete implementation:
 ///
 /// ```rust,ignore
-/// let publisher = swe_edge_egress_message_broker::default_publisher();
+/// let publisher = MessageBrokerSvc::default_publisher();
 /// publisher.publish("orders.created", Message::new(b"{}")).await?;
 /// ```
 ///
@@ -30,14 +30,4 @@ pub trait MessagePublisher: Send + Sync {
 
     /// Verify the publisher is connected and the broker is reachable.
     fn health_check(&self) -> BoxFuture<'_, PublisherResult<()>>;
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_message_publisher_is_object_safe() {
-        fn _assert(_: &dyn MessagePublisher) {}
-    }
 }

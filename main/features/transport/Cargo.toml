@@ -32,10 +32,21 @@ tokio.workspace                         = true
 tracing.workspace                       = true
 swe-edge-runtime-message-broker.workspace = true
 serde                  = { version = "1.0", features = ["derive"] }
-swe-edge-configbuilder = { path = "../../../../../configbuilder/main/features/configbuilder" }
+swe-edge-configbuilder.workspace = true
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+futures.workspace = true
+swe-edge-configbuilder.workspace = true
+swe-edge-runtime-message-broker.workspace = true
+
+[[test]]
+name = "broker_svc_int_test"
+path = "tests/broker_svc_int_test.rs"
+
+[[test]]
+name = "validator_trait_int_test"
+path = "tests/validator_trait_int_test.rs"
 
 [[test]]
 name = "publisher_int_test"
@@ -53,5 +64,63 @@ path = "tests/message_broker_dep_int_test.rs"
 name = "saf_publisher_int_test"
 path = "tests/saf_publisher_int_test.rs"
 
-[lints]
-workspace = true
+[[test]]
+name = "publisher_error_int_test"
+path = "tests/publisher_error_int_test.rs"
+
+[[test]]
+name = "message_publisher_int_test"
+path = "tests/message_publisher_int_test.rs"
+
+[[test]]
+name = "application_config_builder_int_test"
+path = "tests/application_config_builder_int_test.rs"
+
+[[test]]
+name = "publisher_config_int_test"
+path = "tests/publisher_config_int_test.rs"
+
+[[test]]
+name = "publisher_handle_int_test"
+path = "tests/publisher_handle_int_test.rs"
+
+[[test]]
+name = "message_broker_svc_int_test"
+path = "tests/message_broker_svc_int_test.rs"
+
+[[test]]
+name = "message_publisher_config_int_test"
+path = "tests/message_publisher_config_int_test.rs"
+
+[[test]]
+name = "message_publisher_handle_int_test"
+path = "tests/message_publisher_handle_int_test.rs"
+
+[[test]]
+name = "default_message_publisher_int_test"
+path = "tests/default_message_publisher_int_test.rs"
+
+[[test]]
+name = "nats_message_publisher_int_test"
+path = "tests/nats_message_publisher_int_test.rs"
+
+[[test]]
+name = "publisher_result_int_test"
+path = "tests/publisher_result_int_test.rs"
+
+[[test]]
+name = "in_memory_message_publisher_int_test"
+path = "tests/in_memory_message_publisher_int_test.rs"
+
+[[example]]
+name = "publish"
+path = "examples/publish.rs"
+required-features = ["in-memory"]
+
+[lints.rust]
+unsafe_code  = "deny"
+missing_docs = "warn"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"

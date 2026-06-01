@@ -11,9 +11,9 @@
 //! ```
 //!
 //! ```rust,ignore
-//! use swe_edge_egress_message_broker::{default_publisher, Message};
+//! use swe_edge_egress_message_broker::{MessageBrokerSvc, Message};
 //!
-//! let publisher = default_publisher();
+//! let publisher = MessageBrokerSvc::default_publisher();
 //! publisher.publish("orders.created", Message::new(b"{}")).await?;
 //! ```
 #![deny(unsafe_code)]
@@ -23,5 +23,4 @@ mod api;
 mod core;
 mod gateway;
 mod saf;
-
 pub use gateway::*;

@@ -19,7 +19,8 @@ bytes       = "1.0"
 tokio       = { version = "1.0", features = ["rt", "sync"] }
 tracing     = { version = "0.1", default-features = false }
 
-swe-edge-runtime-message-broker = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", branch = "dev" }
+swe-edge-runtime-message-broker = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", rev = "5b88d5ba" }
+swe-edge-configbuilder           = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", branch = "dev" }
 
 [workspace.lints.rust]
 unsafe_code  = "deny"

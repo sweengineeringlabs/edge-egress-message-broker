@@ -5,8 +5,7 @@
 #[cfg(feature = "in-memory")]
 mod tests {
     use swe_edge_egress_message_broker::{
-        check_health, default_publisher, publish_to, validate, ApplicationConfigBuilder, Message,
-        MessagePublisher, Validator,
+        ApplicationConfigBuilder, Message, MessageBrokerSvc, MessagePublisher, Validator,
     };
 
     struct AlwaysValid;
@@ -18,26 +17,28 @@ mod tests {
 
     #[tokio::test]
     async fn test_default_publisher_saf_factory_returns_healthy_publisher() {
-        let p = default_publisher();
+        let p = MessageBrokerSvc::default_publisher();
         assert!(p.health_check().await.is_ok());
     }
 
     #[tokio::test]
     async fn test_publish_to_succeeds_with_no_subscribers() {
-        let p = default_publisher();
+        let p = MessageBrokerSvc::default_publisher();
         let msg = Message::new(b"test".to_vec());
-        assert!(publish_to(&p, "events.test", msg).await.is_ok());
+        assert!(MessageBrokerSvc::publish_to(&p, "events.test", msg)
+            .await
+            .is_ok());
     }
 
     #[tokio::test]
     async fn test_check_health_returns_ok_for_in_memory_publisher() {
-        let p = default_publisher();
-        assert!(check_health(&p).await.is_ok());
+        let p = MessageBrokerSvc::default_publisher();
+        assert!(MessageBrokerSvc::check_health(&p).await.is_ok());
     }
 
     #[test]
     fn test_validate_returns_ok_for_always_valid() {
-        assert!(validate(&AlwaysValid).is_ok());
+        assert!(MessageBrokerSvc::validate(&AlwaysValid).is_ok());
     }
 
     #[test]

@@ -1212,6 +1212,7 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 [[package]]
 name = "swe-edge-configbuilder"
 version = "0.1.0"
+source = "git+ssh://git@github.com/sweengineeringlabs/edge.git?branch=dev#44add2d42046456924be0cc35985a293c24fe1de"
 dependencies = [
  "dirs",
  "regex",
@@ -1236,7 +1237,7 @@ dependencies = [
 [[package]]
 name = "swe-edge-runtime-message-broker"
 version = "0.1.0"
-source = "git+ssh://git@github.com/sweengineeringlabs/edge.git?branch=dev#5b88d5ba2a5f8a989242d36b1b811e1dc68a09f0"
+source = "git+ssh://git@github.com/sweengineeringlabs/edge.git?rev=5b88d5ba#5b88d5ba2a5f8a989242d36b1b811e1dc68a09f0"
 dependencies = [
  "async-nats",
  "bytes",

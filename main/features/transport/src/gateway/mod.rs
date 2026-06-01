@@ -1,5 +1,5 @@
 //! Gateway layer — public surface for the egress message-broker transport crate.
-pub(crate) mod input;
-pub(crate) mod output;
+pub(crate) mod egress;
+pub(crate) mod ingress;
 
-pub use output::*;
+pub use egress::*;

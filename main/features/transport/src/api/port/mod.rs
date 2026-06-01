@@ -1,6 +1,6 @@
-//! Egress message publisher port traits and error types.
+//! Egress message publisher port trait and result type.
 pub(crate) mod message_publisher;
-pub(crate) mod publisher;
+pub(crate) mod publisher_result;
 
 pub use message_publisher::MessagePublisher;
-pub use publisher::{PublisherError, PublisherResult};
+pub use publisher_result::PublisherResult;
