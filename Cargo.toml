@@ -19,8 +19,8 @@ bytes       = "1.0"
 tokio       = { version = "1.0", features = ["rt", "sync"] }
 tracing     = { version = "0.1", default-features = false }
 
-swe-edge-runtime-message-broker = { path = "../../runtime/main/features/message-broker" }
-swe-edge-configbuilder           = { path = "../../configbuilder/main/features/configbuilder" }
+swe-edge-runtime-message-broker = { path = "../../runtime/main/message-broker" }
+swe-edge-configbuilder           = { path = "../../configbuilder/main/configbuilder" }
 
 [workspace.lints.rust]
 unsafe_code  = "deny"
