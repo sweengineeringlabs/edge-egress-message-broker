@@ -296,16 +296,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
 
 [[package]]
-name = "errno"
-version = "0.3.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
-dependencies = [
- "libc",
- "windows-sys 0.52.0",
-]
-
-[[package]]
 name = "fiat-crypto"
 version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1134,16 +1124,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 
 [[package]]
-name = "signal-hook-registry"
-version = "1.4.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c4db69cba1110affc0e9f7bcd48bbf87b3f4fc7c61fc9155afd4c469eb3d6c1b"
-dependencies = [
- "errno",
- "libc",
-]
-
-[[package]]
 name = "signatory"
 version = "0.27.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1210,9 +1190,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 
 [[package]]
+name = "swe-edge-config"
+version = "0.1.0"
+source = "git+ssh://git@github.com/sweengineeringlabs/edge.git?tag=swe_edge_config_v0.1.0#91e37a1e4d68e3fee151b806811fd537f7cb0e00"
+dependencies = [
+ "dirs",
+ "serde",
+ "thiserror 2.0.18",
+ "toml",
+]
+
+[[package]]
 name = "swe-edge-configbuilder"
 version = "0.1.0"
-source = "git+ssh://git@github.com/sweengineeringlabs/edge.git?branch=dev#44add2d42046456924be0cc35985a293c24fe1de"
 dependencies = [
  "dirs",
  "regex",
@@ -1237,11 +1227,13 @@ dependencies = [
 [[package]]
 name = "swe-edge-runtime-message-broker"
 version = "0.1.0"
-source = "git+ssh://git@github.com/sweengineeringlabs/edge.git?rev=5b88d5ba#5b88d5ba2a5f8a989242d36b1b811e1dc68a09f0"
 dependencies = [
  "async-nats",
  "bytes",
  "futures",
+ "serde",
+ "swe-edge-config",
+ "swe-edge-configbuilder",
  "thiserror 1.0.69",
  "tokio",
  "tracing",
@@ -1361,7 +1353,6 @@ dependencies = [
  "libc",
  "mio",
  "pin-project-lite",
- "signal-hook-registry",
  "socket2",
  "tokio-macros",
  "windows-sys 0.61.2",
