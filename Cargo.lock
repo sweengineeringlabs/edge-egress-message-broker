@@ -1212,12 +1212,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "swe-edge-configbuilder"
+version = "0.1.0"
+source = "git+https://github.com/sweengineeringlabs/edge-configbuilder.git?branch=dev#ca37509d4f0b7f4494d5fce6c39b507146aaa402"
+dependencies = [
+ "dirs",
+ "regex",
+ "serde",
+ "thiserror 2.0.18",
+ "toml",
+]
+
+[[package]]
 name = "swe-edge-egress-message-broker"
 version = "0.1.0"
 dependencies = [
  "futures",
  "serde",
- "swe-edge-configbuilder",
+ "swe-edge-configbuilder 0.1.0",
  "swe-edge-runtime-message-broker",
  "thiserror 2.0.18",
  "tokio",
@@ -1233,7 +1245,7 @@ dependencies = [
  "futures",
  "serde",
  "swe-edge-config",
- "swe-edge-configbuilder",
+ "swe-edge-configbuilder 0.1.0 (git+https://github.com/sweengineeringlabs/edge-configbuilder.git?branch=dev)",
  "thiserror 1.0.69",
  "tokio",
  "tracing",
