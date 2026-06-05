@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 members  = [
-    "main/features/transport",
+    "main/transport",
 ]
 
 [workspace.package]
@@ -19,8 +19,8 @@ bytes       = "1.0"
 tokio       = { version = "1.0", features = ["rt", "sync"] }
 tracing     = { version = "0.1", default-features = false }
 
-swe-edge-runtime-message-broker = { path = "../../runtime/main/message-broker" }
-swe-edge-configbuilder           = { path = "../../configbuilder/main/configbuilder" }
+swe-edge-runtime-message-broker = { git = "https://github.com/sweengineeringlabs/edge-runtime.git", branch = "dev" }
+swe-edge-configbuilder = { git = "https://github.com/sweengineeringlabs/edge-configbuilder.git", branch = "dev" }
 
 [workspace.lints.rust]
 unsafe_code  = "deny"
