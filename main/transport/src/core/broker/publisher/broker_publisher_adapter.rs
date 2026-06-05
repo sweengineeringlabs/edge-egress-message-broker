@@ -1,4 +1,7 @@
-//! NATS-backed `MessagePublisher`.
+//! Broker-adapter `MessagePublisher`.
+//!
+//! Wraps any injected [`MessageBroker`] as a [`MessagePublisher`]. The assembler
+//! injects the backend; this crate never constructs one itself.
 
 use std::sync::Arc;
 
@@ -6,19 +9,19 @@ use futures::future::BoxFuture;
 use swe_edge_message_broker::{Message, MessageBroker};
 
 use crate::api::error::publisher_error::PublisherError;
-use crate::api::port::message_publisher::MessagePublisher;
-use crate::api::port::publisher_result::PublisherResult;
+use crate::api::traits::message_publisher::MessagePublisher;
+use crate::api::types::publisher_result::PublisherResult;
 
-/// Publisher backed by a NATS server via `async-nats`.
+/// Adapts any injected [`MessageBroker`] to the [`MessagePublisher`] port contract.
 ///
-/// Construct via [`crate::saf::MessageBrokerSvc::nats_publisher`].
+/// Construct via [`crate::saf::MessagePublisherSvc::from_broker`].
 #[derive(Clone)]
-pub(crate) struct NatsMessagePublisher {
+pub(crate) struct BrokerPublisherAdapter {
     inner: Arc<dyn MessageBroker>,
 }
 
-impl NatsMessagePublisher {
-    /// Wrap an already-connected [`MessageBroker`] as a publisher.
+impl BrokerPublisherAdapter {
+    /// Wrap an already-constructed [`MessageBroker`] as a publisher.
     pub(crate) fn new(broker: impl MessageBroker + 'static) -> Self {
         Self {
             inner: Arc::new(broker),
@@ -26,8 +29,8 @@ impl NatsMessagePublisher {
     }
 }
 
-impl crate::api::nats::publisher::nats_message_publisher::NatsMessagePublisher
-    for NatsMessagePublisher
+impl crate::api::broker::publisher::broker_message_publisher::BrokerMessagePublisher
+    for BrokerPublisherAdapter
 {
 }
 
@@ -35,10 +38,10 @@ impl crate::api::nats::publisher::nats_message_publisher::NatsMessagePublisher
 // part of the contract; the empty impl above proves the concrete publisher
 // conforms to it.
 const _: core::marker::PhantomData<
-    dyn crate::api::nats::publisher::nats_message_publisher::NatsMessagePublisher,
+    dyn crate::api::broker::publisher::broker_message_publisher::BrokerMessagePublisher,
 > = core::marker::PhantomData;
 
-impl MessagePublisher for NatsMessagePublisher {
+impl MessagePublisher for BrokerPublisherAdapter {
     fn publish<'a>(&'a self, topic: &'a str, msg: Message) -> BoxFuture<'a, PublisherResult<()>> {
         Box::pin(async move {
             self.inner
@@ -64,8 +67,8 @@ mod tests {
 
     use swe_edge_message_broker::{BrokerError, MessageStream};
 
-    struct NatsMessagePublisherMockBroker;
-    impl swe_edge_message_broker::MessageBroker for NatsMessagePublisherMockBroker {
+    struct MockBroker;
+    impl swe_edge_message_broker::MessageBroker for MockBroker {
         fn publish<'a>(
             &'a self,
             _: &'a str,
@@ -87,12 +90,25 @@ mod tests {
     }
 
     #[test]
-    fn test_nats_message_publisher_is_object_safe() {
+    fn test_broker_publisher_adapter_is_object_safe() {
         fn _assert(_: &dyn MessagePublisher) {}
     }
 
     #[test]
-    fn test_nats_message_publisher_new_accepts_any_broker() {
-        let _ = NatsMessagePublisher::new(NatsMessagePublisherMockBroker);
+    fn test_broker_publisher_adapter_new_accepts_any_broker() {
+        let _ = BrokerPublisherAdapter::new(MockBroker);
+    }
+
+    #[tokio::test]
+    async fn test_broker_publisher_adapter_health_check_returns_ok() {
+        let p = BrokerPublisherAdapter::new(MockBroker);
+        assert!(p.health_check().await.is_ok());
+    }
+
+    #[tokio::test]
+    async fn test_broker_publisher_adapter_publish_to_topic_returns_ok() {
+        let p = BrokerPublisherAdapter::new(MockBroker);
+        let msg = Message::new(b"hello".to_vec());
+        assert!(p.publish("test.topic", msg).await.is_ok());
     }
 }

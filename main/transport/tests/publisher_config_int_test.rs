@@ -1,6 +1,6 @@
 //! Integration tests — MessagePublisherConfig.
 
-use swe_edge_egress_message_broker::MessagePublisherConfig;
+use swe_edge_egress_message_publisher::MessagePublisherConfig;
 
 /// @covers: MessagePublisherConfig::default
 #[test]

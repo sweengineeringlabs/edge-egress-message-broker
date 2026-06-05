@@ -1,12 +1,12 @@
 [package]
-name         = "swe-edge-egress-message-broker"
+name         = "swe-edge-egress-message-publisher"
 version.workspace     = true
 edition.workspace     = true
 license.workspace     = true
 rust-version.workspace = true
 authors.workspace     = true
 repository.workspace  = true
-description  = "edge — egress message publisher: opt-in MessagePublisher port with in-memory and NATS backends."
+description  = "edge — egress message publisher: injection-only MessagePublisher port."
 keywords     = ["message-broker", "pubsub", "egress", "nats", "swe"]
 categories   = ["network-programming", "asynchronous"]
 
@@ -15,16 +15,8 @@ application_type = "lib"
 service_type     = "transport"
 
 [lib]
-name = "swe_edge_egress_message_broker"
+name = "swe_edge_egress_message_publisher"
 path = "src/lib.rs"
-
-[features]
-default   = []
-# In-memory broadcast publisher — for testing and single-process deployments.
-# Pulls the runtime broker backend in addition to the always-present contract.
-in-memory = ["dep:swe-edge-runtime-message-broker", "swe-edge-runtime-message-broker/tokio-rt"]
-# NATS-backed publisher.
-nats      = ["dep:swe-edge-runtime-message-broker", "swe-edge-runtime-message-broker/nats"]
 
 [dependencies]
 thiserror.workspace                     = true
@@ -34,8 +26,6 @@ tracing.workspace                       = true
 # Contract: the MessagePublisher port speaks the broker vocabulary (Message,
 # BrokerError) owned by edge-message-broker — always present.
 swe-edge-message-broker.workspace       = true
-# Backends: concrete in-memory / NATS brokers, pulled only when a feature is on.
-swe-edge-runtime-message-broker         = { workspace = true, optional = true }
 serde                  = { version = "1.0", features = ["derive"] }
 swe-edge-configbuilder.workspace = true
 
@@ -102,12 +92,8 @@ name = "message_publisher_handle_int_test"
 path = "tests/message_publisher_handle_int_test.rs"
 
 [[test]]
-name = "default_message_publisher_int_test"
-path = "tests/default_message_publisher_int_test.rs"
-
-[[test]]
-name = "nats_message_publisher_int_test"
-path = "tests/nats_message_publisher_int_test.rs"
+name = "broker_publisher_adapter_int_test"
+path = "tests/broker_publisher_adapter_int_test.rs"
 
 [[test]]
 name = "publisher_result_int_test"
@@ -117,10 +103,17 @@ path = "tests/publisher_result_int_test.rs"
 name = "in_memory_message_publisher_int_test"
 path = "tests/in_memory_message_publisher_int_test.rs"
 
+[[test]]
+name = "default_message_publisher_int_test"
+path = "tests/default_message_publisher_int_test.rs"
+
+[[test]]
+name = "nats_message_publisher_int_test"
+path = "tests/nats_message_publisher_int_test.rs"
+
 [[example]]
 name = "publish"
 path = "examples/publish.rs"
-required-features = ["in-memory"]
 
 [lints.rust]
 unsafe_code  = "deny"

@@ -1,6 +1,6 @@
 //! Integration tests — MessagePublisherConfig type.
 
-use swe_edge_egress_message_broker::MessagePublisherConfig;
+use swe_edge_egress_message_publisher::MessagePublisherConfig;
 
 /// @covers: MessagePublisherConfig — default capacity
 #[test]

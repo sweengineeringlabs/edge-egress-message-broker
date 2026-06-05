@@ -1,10 +1,10 @@
-//! Integration tests — MessageBrokerSvc factory type.
+//! Integration tests — MessagePublisherSvc factory type.
 
-use swe_edge_egress_message_broker::MessageBrokerSvc;
+use swe_edge_egress_message_publisher::MessagePublisherSvc;
 
-/// @covers: MessageBrokerSvc — type exists and is constructible
+/// @covers: MessagePublisherSvc — type exists and is constructible
 #[test]
-fn test_message_broker_svc_type_exists() {
-    // MessageBrokerSvc is a unit struct; it exists and the type is accessible.
-    let _: MessageBrokerSvc = MessageBrokerSvc;
+fn test_message_publisher_svc_type_exists() {
+    // MessagePublisherSvc is a unit struct; it exists and the type is accessible.
+    let _: MessagePublisherSvc = MessagePublisherSvc;
 }

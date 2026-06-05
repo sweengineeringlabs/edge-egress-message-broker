@@ -1,9 +1,5 @@
-//! API layer — egress message publisher port contracts.
-#[cfg(feature = "in-memory")]
-pub(crate) mod default;
+//! API layer — egress message publisher contracts.
+pub(crate) mod broker;
 pub(crate) mod error;
-#[cfg(feature = "nats")]
-pub(crate) mod nats;
-pub(crate) mod port;
 pub(crate) mod traits;
 pub(crate) mod types;

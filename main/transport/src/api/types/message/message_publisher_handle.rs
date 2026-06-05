@@ -4,13 +4,13 @@ use std::sync::Arc;
 
 use futures::future::BoxFuture;
 
-use crate::api::port::message_publisher::MessagePublisher;
-use crate::api::port::publisher_result::PublisherResult;
+use crate::api::traits::message_publisher::MessagePublisher;
+use crate::api::types::publisher_result::PublisherResult;
 
 /// An opaque, cloneable handle to a [`MessagePublisher`] instance.
 ///
 /// Returned by SAF factory functions such as
-/// [`MessageBrokerSvc::default_publisher`](crate::api::types::message::message_broker_svc::MessageBrokerSvc).
+/// [`MessagePublisherSvc::publisher`](crate::api::types::message::message_broker_svc::MessagePublisherSvc).
 /// Callers use this handle as a `dyn`-compatible publisher without needing to
 /// name the underlying concrete type.
 #[derive(Clone)]
@@ -20,7 +20,6 @@ pub struct MessagePublisherHandle {
 
 impl MessagePublisherHandle {
     /// Wrap any `MessagePublisher` implementation in a handle.
-    #[cfg(any(feature = "in-memory", feature = "nats"))]
     pub(crate) fn new(publisher: impl MessagePublisher + 'static) -> Self {
         Self {
             inner: Arc::new(publisher),

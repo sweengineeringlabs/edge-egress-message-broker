@@ -1,7 +1,7 @@
 //! Integration tests — MessagePublisher trait contract.
 
 use futures::future::BoxFuture;
-use swe_edge_egress_message_broker::{Message, MessagePublisher, PublisherResult};
+use swe_edge_egress_message_publisher::{Message, MessagePublisher, PublisherResult};
 
 struct NeverPublisher;
 impl MessagePublisher for NeverPublisher {

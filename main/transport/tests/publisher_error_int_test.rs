@@ -1,6 +1,6 @@
 //! Integration tests — PublisherError type.
 
-use swe_edge_egress_message_broker::PublisherError;
+use swe_edge_egress_message_publisher::PublisherError;
 
 /// @covers: PublisherError::Publish
 #[test]

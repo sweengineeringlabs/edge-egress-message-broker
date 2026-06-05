@@ -1,18 +1,17 @@
-//! Integration tests — `MessageBrokerSvc` SAF factory methods.
+//! Integration tests — `MessagePublisherSvc` SAF factory methods.
 //!
 //! Covers rules 77 (all pub fns tested) and 78 (@covers: annotations).
 
-use swe_edge_egress_message_broker::{MessageBrokerSvc, Validator};
+use swe_edge_egress_message_publisher::{MessagePublisherSvc, Validator};
 
-/// @covers: MessageBrokerSvc::create_config_builder
+/// @covers: MessagePublisherSvc::create_config_builder
 #[test]
 fn test_create_config_builder_returns_builder_with_crate_name() {
-    let b = MessageBrokerSvc::create_config_builder();
-    // The builder must be constructible and carry the crate name.
+    let b = MessagePublisherSvc::create_config_builder();
     let _ = b;
 }
 
-/// @covers: MessageBrokerSvc::validate
+/// @covers: MessagePublisherSvc::validate
 #[test]
 fn test_validate_returns_ok_for_always_valid_validator() {
     struct AlwaysOk;
@@ -21,10 +20,10 @@ fn test_validate_returns_ok_for_always_valid_validator() {
             Ok(())
         }
     }
-    assert!(MessageBrokerSvc::validate(&AlwaysOk).is_ok());
+    assert!(MessagePublisherSvc::validate(&AlwaysOk).is_ok());
 }
 
-/// @covers: MessageBrokerSvc::validate
+/// @covers: MessagePublisherSvc::validate
 #[test]
 fn test_validate_propagates_err_from_validator_impl() {
     struct AlwaysFail;
@@ -33,34 +32,53 @@ fn test_validate_propagates_err_from_validator_impl() {
             Err("always fails".into())
         }
     }
-    assert!(MessageBrokerSvc::validate(&AlwaysFail).is_err());
+    assert!(MessagePublisherSvc::validate(&AlwaysFail).is_err());
 }
 
-#[cfg(feature = "in-memory")]
-mod in_memory {
-    use swe_edge_egress_message_broker::{Message, MessageBrokerSvc, MessagePublisher};
+mod with_mock_broker {
+    use swe_edge_egress_message_publisher::{Message, MessagePublisher, MessagePublisherSvc};
+    use swe_edge_message_broker::{BrokerError, MessageBroker, MessageStream};
 
-    /// @covers: MessageBrokerSvc::publish_to
+    struct MockBroker;
+    impl MessageBroker for MockBroker {
+        fn publish<'a>(&'a self, _: &'a str, _: Message) -> futures::future::BoxFuture<'a, Result<(), BrokerError>> {
+            Box::pin(futures::future::ready(Ok(())))
+        }
+        fn subscribe<'a>(&'a self, _: &'a str) -> futures::future::BoxFuture<'a, Result<MessageStream, BrokerError>> {
+            Box::pin(futures::future::ready(Ok(Box::pin(futures::stream::empty()) as MessageStream)))
+        }
+        fn health_check(&self) -> futures::future::BoxFuture<'_, Result<(), BrokerError>> {
+            Box::pin(futures::future::ready(Ok(())))
+        }
+    }
+
+    /// @covers: MessagePublisherSvc::publish_to
     #[tokio::test]
-    async fn test_publish_to_succeeds_with_no_subscribers() {
-        let p = MessageBrokerSvc::default_publisher();
+    async fn test_publish_to_succeeds_with_mock_broker() {
+        let p = MessagePublisherSvc::from_broker(MockBroker);
         let msg = Message::new(b"test".to_vec());
-        assert!(MessageBrokerSvc::publish_to(&p, "events.test", msg)
-            .await
-            .is_ok());
+        assert!(MessagePublisherSvc::publish_to(&p, "events.test", msg).await.is_ok());
     }
 
-    /// @covers: MessageBrokerSvc::check_health
+    /// @covers: MessagePublisherSvc::check_health
     #[tokio::test]
-    async fn test_check_health_returns_ok_for_in_memory_publisher() {
-        let p = MessageBrokerSvc::default_publisher();
-        assert!(MessageBrokerSvc::check_health(&p).await.is_ok());
+    async fn test_check_health_returns_ok_for_broker_publisher() {
+        let p = MessagePublisherSvc::from_broker(MockBroker);
+        assert!(MessagePublisherSvc::check_health(&p).await.is_ok());
     }
 
-    /// @covers: MessageBrokerSvc::default_publisher
+    /// @covers: MessagePublisherSvc::from_broker
     #[tokio::test]
-    async fn test_default_publisher_returns_healthy_publisher() {
-        let p = MessageBrokerSvc::default_publisher();
+    async fn test_from_broker_returns_healthy_publisher() {
+        let p = MessagePublisherSvc::from_broker(MockBroker);
         assert!(p.health_check().await.is_ok());
+    }
+
+    /// @covers: MessagePublisherSvc::publisher
+    #[tokio::test]
+    async fn test_publisher_wraps_injected_publisher() {
+        let p = MessagePublisherSvc::from_broker(MockBroker);
+        let wrapped = MessagePublisherSvc::publisher(p);
+        assert!(wrapped.health_check().await.is_ok());
     }
 }

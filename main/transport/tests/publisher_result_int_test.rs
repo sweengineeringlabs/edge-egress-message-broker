@@ -1,6 +1,6 @@
 //! Integration tests — PublisherResult type alias.
 
-use swe_edge_egress_message_broker::{PublisherError, PublisherResult};
+use swe_edge_egress_message_publisher::{PublisherError, PublisherResult};
 
 /// @covers: PublisherResult — Ok variant
 #[test]
