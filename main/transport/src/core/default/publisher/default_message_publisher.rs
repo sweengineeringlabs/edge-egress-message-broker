@@ -31,6 +31,13 @@ impl crate::api::default::publisher::in_memory_message_publisher::InMemoryMessag
 {
 }
 
+// Name the api/ marker (SEA rule 121) in a type position so it stays a live
+// part of the contract; the empty impl above proves the concrete publisher
+// conforms to it.
+const _: core::marker::PhantomData<
+    dyn crate::api::default::publisher::in_memory_message_publisher::InMemoryMessagePublisher,
+> = core::marker::PhantomData;
+
 impl MessagePublisher for DefaultMessagePublisher {
     fn publish<'a>(&'a self, topic: &'a str, msg: Message) -> BoxFuture<'a, PublisherResult<()>> {
         Box::pin(async move {

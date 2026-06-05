@@ -31,6 +31,13 @@ impl crate::api::nats::publisher::nats_message_publisher::NatsMessagePublisher
 {
 }
 
+// Name the api/ marker (SEA rule 121) in a type position so it stays a live
+// part of the contract; the empty impl above proves the concrete publisher
+// conforms to it.
+const _: core::marker::PhantomData<
+    dyn crate::api::nats::publisher::nats_message_publisher::NatsMessagePublisher,
+> = core::marker::PhantomData;
+
 impl MessagePublisher for NatsMessagePublisher {
     fn publish<'a>(&'a self, topic: &'a str, msg: Message) -> BoxFuture<'a, PublisherResult<()>> {
         Box::pin(async move {

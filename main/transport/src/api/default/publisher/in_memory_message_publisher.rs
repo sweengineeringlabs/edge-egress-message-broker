@@ -4,8 +4,8 @@
 //! [`crate::api::port::MessagePublisher`] to satisfy this interface contract.
 
 /// Marker trait for in-memory (default) message publisher implementations.
-// SEA api/ interface anchor — implemented by the core publisher (under the
-// in-memory feature) but never used as a bound, so its dead/used status varies
-// by feature; `allow` tolerates both without an unfulfilled-expectation warning.
-#[allow(dead_code)]
+///
+/// The core publisher implements this and a compile-time `PhantomData` reference
+/// in `core/default/publisher/` names it in a type position, so it is a live
+/// part of the contract.
 pub trait InMemoryMessagePublisher: crate::api::port::MessagePublisher {}
