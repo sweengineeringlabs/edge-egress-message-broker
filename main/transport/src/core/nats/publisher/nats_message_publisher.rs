@@ -3,7 +3,7 @@
 use std::sync::Arc;
 
 use futures::future::BoxFuture;
-use swe_edge_runtime_message_broker::{Message, MessageBroker};
+use swe_edge_message_broker::{Message, MessageBroker};
 
 use crate::api::error::publisher_error::PublisherError;
 use crate::api::port::message_publisher::MessagePublisher;
@@ -55,14 +55,14 @@ impl MessagePublisher for NatsMessagePublisher {
 mod tests {
     use super::*;
 
-    use swe_edge_runtime_message_broker::{BrokerError, MessageStream};
+    use swe_edge_message_broker::{BrokerError, MessageStream};
 
     struct NatsMessagePublisherMockBroker;
-    impl swe_edge_runtime_message_broker::MessageBroker for NatsMessagePublisherMockBroker {
+    impl swe_edge_message_broker::MessageBroker for NatsMessagePublisherMockBroker {
         fn publish<'a>(
             &'a self,
             _: &'a str,
-            _: swe_edge_runtime_message_broker::Message,
+            _: swe_edge_message_broker::Message,
         ) -> futures::future::BoxFuture<'a, Result<(), BrokerError>> {
             Box::pin(futures::future::ready(Ok(())))
         }

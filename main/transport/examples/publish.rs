@@ -5,6 +5,9 @@
 //! cargo run --example publish --features in-memory
 //! ```
 
+// Examples favour terse `.expect()` over production-grade error handling.
+#![allow(clippy::expect_used, clippy::unwrap_used)]
+
 #[cfg(feature = "in-memory")]
 #[tokio::main]
 async fn main() {

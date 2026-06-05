@@ -1,6 +1,6 @@
 //! Error type for outbound message publishing operations.
 
-use swe_edge_runtime_message_broker::BrokerError;
+use swe_edge_message_broker::BrokerError;
 
 /// Errors returned by [`MessagePublisher`](crate::api::port::MessagePublisher) operations.
 #[derive(Debug, thiserror::Error)]

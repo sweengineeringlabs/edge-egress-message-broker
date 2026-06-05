@@ -4,7 +4,7 @@ use crate::api::port::message_publisher::MessagePublisher;
 use crate::api::port::publisher_result::PublisherResult;
 use crate::api::traits::validator::Validator;
 use crate::api::types::message::message_broker_svc::MessageBrokerSvc;
-use swe_edge_runtime_message_broker::Message;
+use swe_edge_message_broker::Message;
 
 #[cfg(any(feature = "in-memory", feature = "nats"))]
 use crate::api::types::message::message_publisher_handle::MessagePublisherHandle;
@@ -64,8 +64,8 @@ impl MessageBrokerSvc {
     pub async fn nats_publisher(
         url: &str,
     ) -> Result<MessagePublisherHandle, crate::api::error::PublisherError> {
-        use swe_edge_runtime_message_broker::nats_broker;
-        let broker = nats_broker(url)
+        use swe_edge_runtime_message_broker::MessageBrokerFactory;
+        let broker = MessageBrokerFactory::nats(url)
             .await
             .map_err(crate::api::error::PublisherError::from)?;
         Ok(MessagePublisherHandle::new(

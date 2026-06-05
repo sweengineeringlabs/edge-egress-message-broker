@@ -1,9 +1,10 @@
-//! In-memory `MessagePublisher` backed by `swe_edge_runtime_message_broker::in_memory_broker()`.
+//! In-memory `MessagePublisher` backed by the runtime's in-memory broker backend.
 
 use std::sync::Arc;
 
 use futures::future::BoxFuture;
-use swe_edge_runtime_message_broker::{in_memory_broker, Message, MessageBroker};
+use swe_edge_message_broker::{Message, MessageBroker};
+use swe_edge_runtime_message_broker::MessageBrokerFactory;
 
 use crate::api::error::publisher_error::PublisherError;
 use crate::api::port::message_publisher::MessagePublisher;
@@ -20,7 +21,7 @@ pub(crate) struct DefaultMessagePublisher {
 impl DefaultMessagePublisher {
     pub(crate) fn new() -> Self {
         Self {
-            inner: Arc::new(in_memory_broker()),
+            inner: Arc::new(MessageBrokerFactory::in_memory()),
         }
     }
 }

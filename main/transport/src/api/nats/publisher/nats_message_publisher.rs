@@ -4,8 +4,8 @@
 //! implements [`crate::api::port::MessagePublisher`] to satisfy this contract.
 
 /// Marker trait for NATS-backed message publisher implementations.
-#[expect(
-    dead_code,
-    reason = "SEA api/ interface anchor — implemented by the core publisher; not used as a bound"
-)]
+// SEA api/ interface anchor — implemented by the core publisher (under the
+// nats feature) but never used as a bound, so its dead/used status varies by
+// feature; `allow` tolerates both without an unfulfilled-expectation warning.
+#[allow(dead_code)]
 pub trait NatsMessagePublisher: crate::api::port::MessagePublisher {}

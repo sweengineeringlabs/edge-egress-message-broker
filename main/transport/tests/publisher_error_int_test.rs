@@ -31,7 +31,7 @@ fn test_publisher_error_connection_formats_message() {
 /// @covers: PublisherError::from(BrokerError)
 #[test]
 fn test_publisher_error_from_broker_error_publish() {
-    use swe_edge_runtime_message_broker::BrokerError;
+    use swe_edge_message_broker::BrokerError;
     let be = BrokerError::Publish {
         topic: "events".into(),
         reason: "nats down".into(),
@@ -43,7 +43,7 @@ fn test_publisher_error_from_broker_error_publish() {
 /// @covers: PublisherError::from(BrokerError)
 #[test]
 fn test_publisher_error_from_broker_error_unavailable() {
-    use swe_edge_runtime_message_broker::BrokerError;
+    use swe_edge_message_broker::BrokerError;
     let be = BrokerError::Unavailable("offline".into());
     let pe = PublisherError::from(be);
     assert!(matches!(pe, PublisherError::Unavailable(_)));

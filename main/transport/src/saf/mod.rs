@@ -6,4 +6,4 @@ pub use crate::api::port::{MessagePublisher, PublisherResult};
 pub use crate::api::types::{
     ApplicationConfigBuilder, MessageBrokerSvc, MessagePublisherConfig, MessagePublisherHandle,
 };
-pub use swe_edge_runtime_message_broker::Message;
+pub use swe_edge_message_broker::Message;

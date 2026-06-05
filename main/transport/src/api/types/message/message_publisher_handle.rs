@@ -32,7 +32,7 @@ impl MessagePublisher for MessagePublisherHandle {
     fn publish<'a>(
         &'a self,
         topic: &'a str,
-        msg: swe_edge_runtime_message_broker::Message,
+        msg: swe_edge_message_broker::Message,
     ) -> BoxFuture<'a, PublisherResult<()>> {
         self.inner.publish(topic, msg)
     }
