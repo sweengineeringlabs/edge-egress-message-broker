@@ -1,11 +1,11 @@
 [package]
 name         = "swe-edge-egress-message-publisher"
-version.workspace     = true
-edition.workspace     = true
-license.workspace     = true
-rust-version.workspace = true
-authors.workspace     = true
-repository.workspace  = true
+version      = "0.1.0"
+edition      = "2021"
+license      = "MIT OR Apache-2.0"
+rust-version = "1.95"
+authors      = ["SWE Engineering Labs"]
+repository   = "https://github.com/sweengineeringlabs/edge"
 description  = "edge — egress message publisher: injection-only MessagePublisher port."
 keywords     = ["message-broker", "pubsub", "egress", "nats", "swe"]
 categories   = ["network-programming", "asynchronous"]
@@ -16,24 +16,24 @@ service_type     = "transport"
 
 [lib]
 name = "swe_edge_egress_message_publisher"
-path = "src/lib.rs"
+path = "main/src/lib.rs"
 
 [dependencies]
-thiserror.workspace                     = true
-futures.workspace                       = true
-tokio.workspace                         = true
-tracing.workspace                       = true
+thiserror   = "2"
+futures     = "0.3"
+tokio       = { version = "1.0", features = ["rt", "sync"] }
+tracing     = { version = "0.1", default-features = false }
+serde       = { version = "1.0", features = ["derive"] }
 # Contract: the MessagePublisher port speaks the broker vocabulary (Message,
 # BrokerError) owned by edge-message-broker — always present.
-swe-edge-message-broker.workspace       = true
-serde                  = { version = "1.0", features = ["derive"] }
-swe-edge-configbuilder.workspace = true
+swe-edge-message-broker  = { git = "https://github.com/sweengineeringlabs/edge-message-broker.git", branch = "dev" }
+swe-edge-configbuilder   = { git = "https://github.com/sweengineeringlabs/edge-configbuilder.git", tag = "v0.1.0" }
 
 [dev-dependencies]
-tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
-futures.workspace = true
-swe-edge-configbuilder.workspace = true
-swe-edge-message-broker.workspace = true
+tokio              = { version = "1.0", features = ["rt-multi-thread", "macros"] }
+futures            = "0.3"
+swe-edge-configbuilder  = { git = "https://github.com/sweengineeringlabs/edge-configbuilder.git", tag = "v0.1.0" }
+swe-edge-message-broker = { git = "https://github.com/sweengineeringlabs/edge-message-broker.git", branch = "dev" }
 
 [[test]]
 name = "broker_svc_int_test"
