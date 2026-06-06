@@ -9,11 +9,20 @@ use swe_edge_message_broker::{BrokerError, MessageBroker, MessageStream};
 
 struct MockBroker;
 impl MessageBroker for MockBroker {
-    fn publish<'a>(&'a self, _: &'a str, _: Message) -> futures::future::BoxFuture<'a, Result<(), BrokerError>> {
+    fn publish<'a>(
+        &'a self,
+        _: &'a str,
+        _: Message,
+    ) -> futures::future::BoxFuture<'a, Result<(), BrokerError>> {
         Box::pin(futures::future::ready(Ok(())))
     }
-    fn subscribe<'a>(&'a self, _: &'a str) -> futures::future::BoxFuture<'a, Result<MessageStream, BrokerError>> {
-        Box::pin(futures::future::ready(Ok(Box::pin(futures::stream::empty()) as MessageStream)))
+    fn subscribe<'a>(
+        &'a self,
+        _: &'a str,
+    ) -> futures::future::BoxFuture<'a, Result<MessageStream, BrokerError>> {
+        Box::pin(futures::future::ready(Ok(
+            Box::pin(futures::stream::empty()) as MessageStream,
+        )))
     }
     fn health_check(&self) -> futures::future::BoxFuture<'_, Result<(), BrokerError>> {
         Box::pin(futures::future::ready(Ok(())))
@@ -37,7 +46,9 @@ async fn test_from_broker_saf_factory_returns_healthy_publisher() {
 async fn test_publish_to_succeeds_with_mock_broker() {
     let p = MessagePublisherSvc::from_broker(MockBroker);
     let msg = Message::new(b"test".to_vec());
-    assert!(MessagePublisherSvc::publish_to(&p, "events.test", msg).await.is_ok());
+    assert!(MessagePublisherSvc::publish_to(&p, "events.test", msg)
+        .await
+        .is_ok());
 }
 
 #[tokio::test]

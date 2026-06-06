@@ -10,7 +10,7 @@ use crate::api::types::publisher_result::PublisherResult;
 /// An opaque, cloneable handle to a [`MessagePublisher`] instance.
 ///
 /// Returned by SAF factory functions such as
-/// [`MessagePublisherSvc::publisher`](crate::api::types::message::message_broker_svc::MessagePublisherSvc).
+/// [`MessagePublisherSvc::publisher`](crate::api::types::message_broker_svc::MessagePublisherSvc).
 /// Callers use this handle as a `dyn`-compatible publisher without needing to
 /// name the underlying concrete type.
 #[derive(Clone)]

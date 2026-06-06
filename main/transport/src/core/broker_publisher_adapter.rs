@@ -29,7 +29,7 @@ impl BrokerPublisherAdapter {
     }
 }
 
-impl crate::api::broker::publisher::broker_message_publisher::BrokerMessagePublisher
+impl crate::api::traits::broker_message_publisher::BrokerMessagePublisher
     for BrokerPublisherAdapter
 {
 }
@@ -38,7 +38,7 @@ impl crate::api::broker::publisher::broker_message_publisher::BrokerMessagePubli
 // part of the contract; the empty impl above proves the concrete publisher
 // conforms to it.
 const _: core::marker::PhantomData<
-    dyn crate::api::broker::publisher::broker_message_publisher::BrokerMessagePublisher,
+    dyn crate::api::traits::broker_message_publisher::BrokerMessagePublisher,
 > = core::marker::PhantomData;
 
 impl MessagePublisher for BrokerPublisherAdapter {

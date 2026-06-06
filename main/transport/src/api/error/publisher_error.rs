@@ -2,7 +2,7 @@
 
 use swe_edge_message_broker::BrokerError;
 
-/// Errors returned by [`MessagePublisher`](crate::api::port::MessagePublisher) operations.
+/// Errors returned by [`MessagePublisher`](crate::api::traits::MessagePublisher) operations.
 #[derive(Debug, thiserror::Error)]
 pub enum PublisherError {
     /// Failed to publish a message to the given topic.

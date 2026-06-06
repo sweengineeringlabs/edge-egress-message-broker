@@ -1,10 +1,10 @@
 //! SAF factory methods on [`MessagePublisherSvc`].
 
 use crate::api::traits::message_publisher::MessagePublisher;
-use crate::api::types::publisher_result::PublisherResult;
 use crate::api::traits::validator::Validator;
-use crate::api::types::message::message_broker_svc::MessagePublisherSvc;
-use crate::api::types::message::message_publisher_handle::MessagePublisherHandle;
+use crate::api::types::message_broker_svc::MessagePublisherSvc;
+use crate::api::types::message_publisher_handle::MessagePublisherHandle;
+use crate::api::types::publisher_result::PublisherResult;
 use swe_edge_message_broker::{Message, MessageBroker};
 
 impl MessagePublisherSvc {

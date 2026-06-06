@@ -16,7 +16,9 @@ fn test_validate_default_publisher_config_capacity_nonzero_returns_ok() {
         }
     }
 
-    assert!(MessagePublisherSvc::validate(&CfgValidator(MessagePublisherConfig::default())).is_ok());
+    assert!(
+        MessagePublisherSvc::validate(&CfgValidator(MessagePublisherConfig::default())).is_ok()
+    );
 }
 
 /// @covers: MessagePublisherSvc::validate — propagates Err from the Validator impl.
