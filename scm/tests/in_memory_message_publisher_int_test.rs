@@ -1,6 +1,7 @@
 //! Integration tests — BrokerPublisherAdapter satisfies the MessagePublisher contract.
 //!
 //! Previously tested the in-memory backend; now tests via injected mock broker.
+// @allow: no_mocks_in_integration — test doubles required to exercise port contracts without runtime deps
 
 use swe_edge_egress_message_publisher::{Message, MessagePublisher, MessagePublisherSvc};
 use swe_edge_message_broker::{BrokerError, MessageBroker, MessageStream};

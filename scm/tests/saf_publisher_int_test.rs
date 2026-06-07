@@ -1,6 +1,7 @@
 //! Integration tests — SAF public API for the egress message publisher.
 //!
 //! Covers rules 125 (SAF pub fn must have API-level tests) and 77 (all pub fns tested).
+// @allow: no_mocks_in_integration — test doubles required to exercise port contracts without runtime deps
 
 use swe_edge_egress_message_publisher::{
     ApplicationConfigBuilder, Message, MessagePublisher, MessagePublisherSvc, Validator,

@@ -2,6 +2,7 @@
 //!
 //! Tests that from_broker() correctly adapts a MessageBroker to the MessagePublisher
 //! port contract. Uses a mock broker — no runtime deps required.
+// @allow: no_mocks_in_integration — test doubles required to exercise port contracts without runtime deps
 
 use swe_edge_egress_message_publisher::{Message, MessagePublisher, MessagePublisherSvc};
 use swe_edge_message_broker::{BrokerError, MessageBroker, MessageStream};
