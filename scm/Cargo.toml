@@ -21,7 +21,7 @@ path = "main/src/lib.rs"
 [dependencies]
 thiserror   = "2"
 futures     = "0.3"
-tokio       = { version = "1.0", features = ["rt", "sync"] }
+tokio       = { version = "1.52", features = ["rt", "sync"] }
 tracing     = { version = "0.1", default-features = false }
 serde       = { version = "1.0", features = ["derive"] }
 # Contract: the MessagePublisher port speaks the broker vocabulary (Message,
@@ -30,7 +30,7 @@ swe-edge-message-broker  = { git = "https://github.com/sweengineeringlabs/edge-m
 swe-edge-configbuilder   = { git = "https://github.com/sweengineeringlabs/edge-configbuilder.git", tag = "v0.3.0" }
 
 [dev-dependencies]
-tokio              = { version = "1.0", features = ["rt-multi-thread", "macros"] }
+tokio              = { version = "1.52", features = ["rt-multi-thread", "macros"] }
 futures            = "0.3"
 swe-edge-configbuilder  = { git = "https://github.com/sweengineeringlabs/edge-configbuilder.git", tag = "v0.3.0" }
 swe-edge-message-broker = { git = "https://github.com/sweengineeringlabs/edge-message-broker.git", tag = "v0.3.0" }
