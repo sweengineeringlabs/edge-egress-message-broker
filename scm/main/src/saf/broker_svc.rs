@@ -5,16 +5,16 @@ use crate::api::traits::validator::Validator;
 use crate::api::types::message_broker_svc::MessagePublisherSvc;
 use crate::api::types::message_publisher_handle::MessagePublisherHandle;
 use crate::api::types::publisher_result::PublisherResult;
+use configbuilder::{ConfigBuilder, ConfigLoaderFactory};
 use swe_edge_message_broker::{Message, MessageBroker};
 
 impl MessagePublisherSvc {
-    /// Return a [`ConfigBuilderImpl`](swe_edge_configbuilder::ConfigBuilderImpl) pre-seeded
+    /// Return a [`ConfigBuilderImpl`](configbuilder::ConfigBuilderImpl) pre-seeded
     /// with this crate's package name and version.
-    pub fn create_config_builder() -> swe_edge_configbuilder::ConfigBuilderImpl {
-        let mut b = swe_edge_configbuilder::ConfigBuilderImpl::new();
-        b = b.with_name(env!("CARGO_PKG_NAME"));
-        b = b.with_version(env!("CARGO_PKG_VERSION"));
-        b
+    pub fn create_config_builder() -> configbuilder::ConfigBuilderImpl {
+        ConfigLoaderFactory::create_config_builder()
+            .with_name(env!("CARGO_PKG_NAME"))
+            .with_version(env!("CARGO_PKG_VERSION"))
     }
 
     /// Validate any type that implements [`Validator`].
