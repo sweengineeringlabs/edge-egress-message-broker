@@ -15,7 +15,7 @@ impl Default for MessagePublisherConfig {
     }
 }
 
-impl swe_edge_configbuilder::ConfigSection for MessagePublisherConfig {
+impl configbuilder::ConfigSection for MessagePublisherConfig {
     fn section_name() -> &'static str {
         // @allow: no_stub_fn_bodies
         "message_publisher"
