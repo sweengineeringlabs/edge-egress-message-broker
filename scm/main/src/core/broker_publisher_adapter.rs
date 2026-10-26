@@ -6,7 +6,7 @@
 use std::sync::Arc;
 
 use futures::future::BoxFuture;
-use swe_edge_message_broker::{Message, MessageBroker};
+use swe_edge_message_broker::{HealthCheckRequest, Message, MessageBroker, PublishRequest};
 
 use crate::api::error::publisher_error::PublisherError;
 use crate::api::traits::message_publisher::MessagePublisher;
@@ -45,7 +45,10 @@ impl MessagePublisher for BrokerPublisherAdapter {
     fn publish<'a>(&'a self, topic: &'a str, msg: Message) -> BoxFuture<'a, PublisherResult<()>> {
         Box::pin(async move {
             self.inner
-                .publish(topic, msg)
+                .publish(PublishRequest {
+                    topic: topic.to_string(),
+                    message: Arc::new(msg),
+                })
                 .await
                 .map_err(PublisherError::from)
         })
@@ -54,7 +57,7 @@ impl MessagePublisher for BrokerPublisherAdapter {
     fn health_check(&self) -> BoxFuture<'_, PublisherResult<()>> {
         Box::pin(async move {
             self.inner
-                .health_check()
+                .health_check(HealthCheckRequest)
                 .await
                 .map_err(PublisherError::from)
         })
@@ -65,27 +68,38 @@ impl MessagePublisher for BrokerPublisherAdapter {
 mod tests {
     use super::*;
 
-    use swe_edge_message_broker::{BrokerError, MessageStream};
+    use swe_edge_message_broker::{
+        BrokerError, BrokerFuture, MessageStream, PublishRequest, SubscribeRequest,
+        SubscribeResponse, ValidatorRequest, ValidatorResponse,
+    };
 
     struct MockBroker;
     impl swe_edge_message_broker::MessageBroker for MockBroker {
         fn publish<'a>(
             &'a self,
-            _: &'a str,
-            _: swe_edge_message_broker::Message,
-        ) -> futures::future::BoxFuture<'a, Result<(), BrokerError>> {
-            Box::pin(futures::future::ready(Ok(())))
+            _request: PublishRequest,
+        ) -> BrokerFuture<'a, Result<(), BrokerError>> {
+            BrokerFuture::new(async { Ok(()) })
         }
         fn subscribe<'a>(
             &'a self,
-            _: &'a str,
-        ) -> futures::future::BoxFuture<'a, Result<MessageStream, BrokerError>> {
-            Box::pin(futures::future::ready(Ok(
-                Box::pin(futures::stream::empty()) as MessageStream,
-            )))
+            _request: SubscribeRequest,
+        ) -> BrokerFuture<'a, Result<SubscribeResponse, BrokerError>> {
+            BrokerFuture::new(async {
+                let stream: MessageStream = Box::pin(futures::stream::empty());
+                Ok(SubscribeResponse { stream })
+            })
         }
-        fn health_check(&self) -> futures::future::BoxFuture<'_, Result<(), BrokerError>> {
-            Box::pin(futures::future::ready(Ok(())))
+        fn health_check(
+            &self,
+            _request: HealthCheckRequest,
+        ) -> BrokerFuture<'_, Result<(), BrokerError>> {
+            BrokerFuture::new(async { Ok(()) })
+        }
+        fn validator(&self, _request: ValidatorRequest) -> Result<ValidatorResponse, BrokerError> {
+            Ok(ValidatorResponse {
+                validator: Arc::from(swe_edge_message_broker::BrokerSvc::create_validator()),
+            })
         }
     }
 
